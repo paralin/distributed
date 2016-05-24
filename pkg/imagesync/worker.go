@@ -267,19 +267,25 @@ func (iw *ImageSyncWorker) Run() {
 							continue
 						}
 						matchedOne = true
-						imageTaggedName := strings.Join([]string{iw.Config.Repo.PullPrefix, tf.Target.Image}, "/")
-						fmt.Printf("%s:%s tagging as %s:%s...\n", tf.Target.Image, tag, imageTaggedName, tag)
-						tagopts := dc.TagImageOptions{
-							Repo:  imageTaggedName,
-							Tag:   tag,
-							Force: true,
+						var imageTaggedName string
+						if iw.Config.Repo.PullPrefix == "" {
+							imageTaggedName = tf.Target.Image
+							fmt.Printf("%s:%s pushing to docker hub (empty PullPrefix)...\n", imageTaggedName, tag)
+						} else {
+							imageTaggedName := strings.Join([]string{iw.Config.Repo.PullPrefix, tf.Target.Image}, "/")
+							fmt.Printf("%s:%s tagging as %s:%s...\n", tf.Target.Image, tag, imageTaggedName, tag)
+							tagopts := dc.TagImageOptions{
+								Repo:  imageTaggedName,
+								Tag:   tag,
+								Force: true,
+							}
+							err = iw.DockerClient.TagImage(tf.Target.Image, tagopts)
+							if err != nil {
+								fmt.Printf("Failed to make tag on %s:%s: %v\n", tf.Target.Image, tag, err)
+								break
+							}
+							fmt.Printf("%s:%s pushing to %s...\n", imageTaggedName, tag, iw.Config.Repo.PullPrefix)
 						}
-						err = iw.DockerClient.TagImage(tf.Target.Image, tagopts)
-						if err != nil {
-							fmt.Printf("Failed to make tag on %s:%s: %v\n", tf.Target.Image, tag, err)
-							break
-						}
-						fmt.Printf("%s:%s pushing to %s...\n", imageTaggedName, tag, iw.Config.Repo.PullPrefix)
 						iw.ConfigLock.Lock()
 						authopts = dc.AuthConfiguration{
 							Username: iw.Config.Repo.Username,
