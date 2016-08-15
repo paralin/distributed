@@ -14,7 +14,7 @@ import (
 	"github.com/docker/distribution/registry/client/transport"
 	"github.com/docker/engine-api/types"
 	"github.com/docker/go-connections/sockets"
-	"github.com/synrobo/distributed/pkg/registry"
+	"github.com/fuserobotics/distributed/pkg/registry"
 	"golang.org/x/net/context"
 )
 

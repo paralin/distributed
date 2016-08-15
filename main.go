@@ -14,7 +14,7 @@
 
 package main
 
-import "github.com/synrobo/distributed/cmd"
+import "github.com/fuserobotics/distributed/cmd"
 
 func main() {
 	cmd.Execute()

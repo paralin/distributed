@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/spf13/cobra"
-	"github.com/synrobo/distributed/pkg/daemon"
+	"github.com/fuserobotics/distributed/pkg/daemon"
 )
 
 var homeDir string

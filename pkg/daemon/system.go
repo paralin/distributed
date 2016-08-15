@@ -10,8 +10,8 @@ import (
 	"time"
 
 	dc "github.com/fsouza/go-dockerclient"
-	"github.com/synrobo/distributed/pkg/config"
-	"github.com/synrobo/distributed/pkg/imagesync"
+	"github.com/fuserobotics/distributed/pkg/config"
+	"github.com/fuserobotics/distributed/pkg/imagesync"
 )
 
 type System struct {
